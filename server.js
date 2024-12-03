@@ -1,9 +1,11 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const cors = require('cors');
 
 const app = express();
 const client = new MongoClient("mongodb+srv://zdtrove:721904791992@cluster0.euzkd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
