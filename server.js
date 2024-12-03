@@ -10,14 +10,29 @@ app.get('/', (req, res) => {
   res.send('Hello, Node API!');
 });
 
-app.post('/api/addVocabulary', async (req, res) => {
+app.post('/api/vocabulary', async (req, res) => {
   try {
     await client.connect();
     const db = client.db("english-vocabulary");
     const collection = db.collection("vocabulary");
-
     const result = await collection.insertOne(req.body);
+
     res.status(200).json({ success: true, insertedId: result.insertedId });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  } finally {
+    await client.close();
+  }
+});
+
+app.get('/api/vocabulary', async (req, res) => {
+  try {
+    await client.connect();
+    const db = client.db("english-vocabulary");
+    const collection = db.collection("vocabulary");
+    const vocabularyList = await collection.find().toArray();
+
+    res.status(200).json({ success: true, data: vocabularyList });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   } finally {
