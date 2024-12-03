@@ -7,22 +7,22 @@ const client = new MongoClient("mongodb+srv://zdtrove:721904791992@cluster0.euzk
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Hello, Node API!');
+  res.send('Hello, Node API!');
 });
 
-app.post('/api/addUser', async (req, res) => {
-    try {
-        await client.connect();
-        const db = client.db("testdb");
-        const collection = db.collection("users");
+app.post('/api/addVocabulary', async (req, res) => {
+  try {
+    await client.connect();
+    const db = client.db("english-vocabulary");
+    const collection = db.collection("vocabulary");
 
-        const result = await collection.insertOne(req.body);
-        res.status(200).json({ success: true, insertedId: result.insertedId });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    } finally {
-        await client.close();
-    }
+    const result = await collection.insertOne(req.body);
+    res.status(200).json({ success: true, insertedId: result.insertedId });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  } finally {
+    await client.close();
+  }
 });
 
 const PORT = process.env.PORT || 3000;
